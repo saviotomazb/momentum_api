@@ -1,0 +1,43 @@
+# Build
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# ASP.NET
+appsettings.Development.json
+
+# Rider
+*.sln.iml
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# NuGet
+*.nupkg
+
+# Entity Framework
+Migrations/*Snapshot.cs

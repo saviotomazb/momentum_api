@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Momentum.API/Momentum.API.csproj" />
+    <Project Path="src/Momentum.Application/Momentum.Application.csproj" />
+    <Project Path="src/Momentum.Domain/Momentum.Domain.csproj" />
+    <Project Path="src/Momentum.Infrastructure/Momentum.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Momentum.UnitTests/Momentum.UnitTests.csproj" />
+  </Folder>
+</Solution>
