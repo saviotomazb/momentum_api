@@ -1,0 +1,20 @@
+services:
+  momentum-db:
+    image: postgres:17
+    container_name: momentum-postgres
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${DB_PORT}:5432"
+
+    volumes:
+      - momentum_postgres_data:/var/lib/postgresql/data
+
+    restart: always
+
+volumes:
+  momentum_postgres_data:
