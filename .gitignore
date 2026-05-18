@@ -41,3 +41,6 @@ Thumbs.db
 
 # Entity Framework
 Migrations/*Snapshot.cs
+
+# Environment variables
+.env*
