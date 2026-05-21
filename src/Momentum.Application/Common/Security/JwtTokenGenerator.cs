@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Momentum.Domain.Entities;
 
-namespace Momentum.Infrastructure.Authentication;
+namespace Momentum.Application.Common.Security;
 
 public class JwtTokenGenerator
 {

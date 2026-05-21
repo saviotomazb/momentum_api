@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Momentum.Infrastructure.Authentication;
+namespace Momentum.Application.Common.Security;
 
 public static class PasswordHasher
 {

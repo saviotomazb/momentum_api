@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Momentum.Application.Common.Security;
+using Momentum.Application.Interfaces.Persistence;
 using Momentum.Infrastructure.Persistence.Context;
+using Momentum.Infrastructure.Persistence.Repositories;
 
 namespace Momentum.Infrastructure.DependencyInjection;
 
@@ -22,6 +25,10 @@ public static class InfrastructureServiceRegistration
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));
+
+        services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<JwtTokenGenerator>();
 
         return services;
     }
