@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Momentum.Application.Common.Security;
 using Momentum.Application.Interfaces.Persistence;
+using Momentum.Application.Interfaces.Habits;
+using Momentum.Application.Services.Habits;
 using Momentum.Infrastructure.Persistence.Context;
 using Momentum.Infrastructure.Persistence.Repositories;
 
@@ -27,6 +29,10 @@ public static class InfrastructureServiceRegistration
             options.UseNpgsql(connectionString));
 
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddScoped<IHabitRepository, HabitRepository>();
+        
+        services.AddScoped<IHabitService, HabitService>();
 
         services.AddScoped<JwtTokenGenerator>();
 
