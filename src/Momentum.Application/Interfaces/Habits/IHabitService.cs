@@ -1,10 +1,13 @@
 using Momentum.Application.DTOs.Habits;
+using Momentum.Application.Common.Pagination;
 
 namespace Momentum.Application.Interfaces.Habits;
 
 public interface IHabitService
 {
-    Task<List<HabitResponse>> GetAllAsync(Guid userId);
+    Task<PagedResult<HabitResponse>> GetAllAsync(
+        Guid userId,
+        HabitFilterRequest filter);
 
     Task<HabitResponse?> GetByIdAsync(Guid id, Guid userId);
 
@@ -19,5 +22,5 @@ public interface IHabitService
 
     Task<bool> DeleteAsync(Guid id, Guid userId);
 
-    Task<bool> CompleteAsync(Guid id, Guid userId);
+    Task<HabitResponse?> CompleteAsync(Guid id, Guid userId);
 }

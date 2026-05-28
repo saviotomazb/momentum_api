@@ -1,10 +1,14 @@
+using Momentum.Application.Common.Pagination;
+using Momentum.Application.DTOs.Habits;
 using Momentum.Domain.Entities;
 
 namespace Momentum.Application.Interfaces.Persistence;
 
 public interface IHabitRepository
 {
-    Task<List<Habit>> GetAllByUserIdAsync(Guid userId);
+    Task<PagedResult<Habit>> GetAllByUserIdAsync(
+        Guid userId,
+        HabitFilterRequest filter);
 
     Task<Habit?> GetByIdAsync(Guid id);
 

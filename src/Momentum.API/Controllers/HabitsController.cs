@@ -8,7 +8,6 @@ namespace Momentum.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class HabitsController : ControllerBase
 {
     private readonly IHabitService _habitService;
@@ -19,16 +18,18 @@ public class HabitsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [Authorize(Policy = "HabitsRead")]
+    public async Task<IActionResult> GetAll([FromQuery] HabitFilterRequest filter)
     {
         var userId = GetUserId();
 
-        var habits = await _habitService.GetAllAsync(userId);
+        var habits = await _habitService.GetAllAsync(userId, filter);
 
         return Ok(habits);
     }
 
     [HttpGet("{id:guid}")]
+    [Authorize(Policy = "HabitsRead")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var userId = GetUserId();
@@ -42,6 +43,7 @@ public class HabitsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "HabitsWrite")]
     public async Task<IActionResult> Create(
         CreateHabitRequest request)
     {
@@ -58,6 +60,7 @@ public class HabitsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Policy = "HabitsWrite")]
     public async Task<IActionResult> Update(
         Guid id,
         UpdateHabitRequest request)
@@ -76,6 +79,7 @@ public class HabitsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "HabitsWrite")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var userId = GetUserId();
@@ -91,22 +95,20 @@ public class HabitsController : ControllerBase
     }
 
     [HttpPost("{id:guid}/complete")]
+    [Authorize(Policy = "HabitsWrite")]
     public async Task<IActionResult> Complete(Guid id)
     {
         var userId = GetUserId();
 
-        var completed = await _habitService.CompleteAsync(
+        var habit = await _habitService.CompleteAsync(
             id,
             userId);
 
-        if (!completed)
+        if (habit is null)
             return BadRequest(
                 new { message = "Habit already completed today." });
 
-        return Ok(new
-        {
-            message = "Habit completed successfully."
-        });
+        return Ok(habit);
     }
 
     private Guid GetUserId()

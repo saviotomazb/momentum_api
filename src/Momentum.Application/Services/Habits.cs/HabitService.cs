@@ -1,3 +1,4 @@
+using Momentum.Application.Common.Pagination;
 using Momentum.Application.DTOs.Habits;
 using Momentum.Application.Interfaces.Habits;
 using Momentum.Application.Interfaces.Persistence;
@@ -14,12 +15,22 @@ public class HabitService : IHabitService
         _habitRepository = habitRepository;
     }
 
-    public async Task<List<HabitResponse>> GetAllAsync(Guid userId)
+    public async Task<PagedResult<HabitResponse>> GetAllAsync(
+        Guid userId,
+        HabitFilterRequest filter)
     {
-        var habits = await _habitRepository
-            .GetAllByUserIdAsync(userId);
+        var habits = await _habitRepository.GetAllByUserIdAsync(
+            userId,
+            filter);
 
-        return habits.Select(MapToResponse).ToList();
+        return new PagedResult<HabitResponse>
+        {
+            Items = habits.Items.Select(MapToResponse).ToList(),
+            Page = habits.Page,
+            PageSize = habits.PageSize,
+            TotalItems = habits.TotalItems,
+            TotalPages = habits.TotalPages
+        };
     }
 
     public async Task<HabitResponse?> GetByIdAsync(
@@ -83,19 +94,19 @@ public class HabitService : IHabitService
         return true;
     }
 
-    public async Task<bool> CompleteAsync(Guid id, Guid userId)
+    public async Task<HabitResponse?> CompleteAsync(Guid id, Guid userId)
     {
         var habit = await _habitRepository
             .GetByIdWithChecksAsync(id);
 
         if (habit is null || habit.UserId != userId)
-            return false;
+            return null;
 
         var alreadyCompletedToday = habit.HabitChecks.Any(x =>
             x.CompletedAt.Date == DateTime.UtcNow.Date);
 
         if (alreadyCompletedToday)
-            return false;
+            return null;
 
         habit.HabitChecks.Add(new HabitCheck
         {
@@ -105,7 +116,7 @@ public class HabitService : IHabitService
 
         await _habitRepository.UpdateAsync(habit);
 
-        return true;
+        return MapToResponse(habit);
     }
 
     private static HabitResponse MapToResponse(Habit habit)

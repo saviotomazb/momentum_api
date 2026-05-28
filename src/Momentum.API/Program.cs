@@ -6,12 +6,24 @@ using System.Text;
 using Momentum.Application.Interfaces.Auth;
 using Momentum.Application.Services.Auth;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
+using Momentum.API.HealthChecks;
 
 Env.Load("../../.env.development");
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        .WriteTo.Console();
+});
 
 var jwtSecret = builder.Configuration["JWT_SECRET"]!;
 
@@ -34,7 +46,14 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HabitsRead", policy =>
+        policy.RequireAuthenticatedUser());
+
+    options.AddPolicy("HabitsWrite", policy =>
+        policy.RequireAuthenticatedUser());
+});
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -51,6 +70,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>("database");
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -92,6 +114,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseSerilogRequestLogging();
+
 app.UseCors("AllowAngularClient");
 
 app.UseAuthentication();
@@ -99,5 +123,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 app.Run();
