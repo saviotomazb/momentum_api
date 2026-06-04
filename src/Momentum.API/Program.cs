@@ -10,9 +10,16 @@ using Serilog;
 using Serilog.Events;
 using Momentum.API.HealthChecks;
 
-Env.Load("../../.env.development");
-
 var builder = WebApplication.CreateBuilder(args);
+
+var envFile = builder.Environment.IsDevelopment()
+    ? "../../.env.development"
+    : "../../.env.production";
+
+if (File.Exists(envFile))
+{
+    Env.Load(envFile);
+}
 
 builder.Configuration.AddEnvironmentVariables();
 
