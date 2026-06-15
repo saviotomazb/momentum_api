@@ -5,21 +5,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)
 ![JWT](https://img.shields.io/badge/Auth-JWT-000000?style=for-the-badge&logo=jsonwebtokens)
 
-> API REST para o projeto Momentum, focada no gerenciamento de usuários, autenticação e base para controle de hábitos. O projeto usa arquitetura em camadas, Entity Framework Core, PostgreSQL e autenticação com JWT.
-
-## Ajustes e melhorias
-
-O projeto ainda está em desenvolvimento e as próximas atualizações podem incluir:
-
-- [x] Estrutura inicial em camadas
-- [x] Persistência com Entity Framework Core e PostgreSQL
-- [x] Registro e login com JWT
-- [x] Swagger em ambiente de desenvolvimento
-- [ ] Endpoints de hábitos
-- [ ] Endpoints de check-ins de hábitos
-- [ ] Validações de entrada
-- [ ] Tratamento global de erros
-- [ ] Cobertura de testes da aplicação
+> API REST desenvolvida com ASP.NET Core para gerenciamento de usuários, autenticação e hábitos. O projeto utiliza Clean Architecture, Entity Framework Core, PostgreSQL, JWT Authentication e Docker para execução local.
 
 ## Pré-requisitos
 
@@ -164,14 +150,42 @@ dotnet test
 
 ## Tecnologias utilizadas
 
+### Backend
+
 - ASP.NET Core
 - Entity Framework Core
 - PostgreSQL
-- JWT Bearer Authentication
+- JWT Authentication
 - BCrypt
-- Swagger / Swashbuckle
-- xUnit, Moq e FluentAssertions
+
+### Arquitetura e Qualidade
+
+- Clean Architecture
+- Repository Pattern
+- Dependency Injection
+
+### Testes
+
+- xUnit
+- Moq
+- FluentAssertions
+
+### Infraestrutura
+
+- Docker
 - Docker Compose
+- Swagger
+
+## Arquitetura
+
+O projeto segue os princípios da Clean Architecture, organizado nas seguintes camadas:
+
+- API: controllers, autenticação e configuração HTTP
+- Application: casos de uso, DTOs e contratos
+- Domain: entidades e regras de negócio
+- Infrastructure: persistência, Entity Framework Core e integrações externas
+
+A comunicação entre camadas é realizada por abstrações, mantendo baixo acoplamento e alta testabilidade.
 
 ## Contribuindo
 
