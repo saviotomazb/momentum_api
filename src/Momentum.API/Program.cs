@@ -70,7 +70,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://momentum-web-three.vercel.app"
+         )
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
