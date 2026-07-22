@@ -1,133 +1,91 @@
 # Momentum API
 
-![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)
-![JWT](https://img.shields.io/badge/Auth-JWT-000000?style=for-the-badge&logo=jsonwebtokens)
+Backend da aplicação **Momentum**, desenvolvido com **ASP.NET Core**, responsável pelas regras de negócio, autenticação, persistência de dados e disponibilização dos serviços consumidos pela aplicação **Momentum Web**.
 
-> API REST desenvolvida com ASP.NET Core para gerenciamento de usuários, autenticação e hábitos. O projeto utiliza Clean Architecture, Entity Framework Core, PostgreSQL, JWT Authentication e Docker para execução local.
+---
 
-## Pré-requisitos
+## 📖 Sobre o Projeto
 
-Antes de começar, verifique se você tem instalado:
+O **Momentum API** é a API REST do ecossistema **Momentum**.
 
-- [.NET SDK 10.0](https://dotnet.microsoft.com/)
-- [Docker](https://www.docker.com/) com Docker Compose
-- Um cliente HTTP, como Swagger, Postman, Insomnia ou REST Client
+Seu objetivo é centralizar toda a lógica de negócio da aplicação, disponibilizando endpoints seguros para autenticação de usuários, gerenciamento de hábitos, tarefas, finanças e demais funcionalidades do sistema.
 
-## Instalando o Momentum API
+A aplicação foi desenvolvida utilizando **ASP.NET Core** e seguindo os princípios da **Clean Architecture**, com foco em escalabilidade, organização e facilidade de manutenção.
 
-Clone o repositório e acesse a pasta do projeto:
+---
 
-```bash
-git clone <url-do-repositorio>
-cd momentum_api
-```
+## ✨ Funcionalidades
 
-Restaure as dependências:
+### ✅ Implementadas
 
-```bash
-dotnet restore
-```
+* 🔐 Autenticação e autorização com JWT
+* 👤 Cadastro e gerenciamento de usuários
+* ✅ Gerenciamento de hábitos
+* 📈 Acompanhamento da evolução do usuário
+* 🌐 API REST
+* 📄 Documentação automática com Swagger/OpenAPI
+* 🗄 Persistência de dados com PostgreSQL
 
-Configure as variáveis de ambiente no arquivo `.env.development`:
+### 🚧 Em desenvolvimento
 
-```env
-ASPNETCORE_ENVIRONMENT=Development
+* 📋 Gerenciamento de tarefas
+* 💰 Gerenciamento financeiro
 
-POSTGRES_DB=momentum_db
-POSTGRES_USER=momentum_user
-POSTGRES_PASSWORD=momentum_password
+---
 
-DB_HOST=localhost
-DB_PORT=5432
+## 🛠️ Stack Tecnológica
 
-JWT_SECRET=sua-chave-secreta-com-pelo-menos-32-caracteres
-JWT_ISSUER=MomentumAPI
-JWT_AUDIENCE=MomentumClient
-JWT_EXPIRATION_MINUTES=60
-```
+### Framework
 
-Suba o banco de dados PostgreSQL:
+* ASP.NET Core (.NET 10)
 
-```bash
-docker compose up -d
-```
+### Linguagem
 
-Aplique as migrations:
+* C#
 
-```bash
-dotnet ef database update --project src/Momentum.Infrastructure --startup-project src/Momentum.API
-```
+### Persistência de Dados
 
-## Usando o Momentum API
+* Entity Framework Core
+* PostgreSQL
+* Npgsql Entity Framework Provider
 
-Execute a API:
+### Segurança
 
-```bash
-dotnet run --project src/Momentum.API
-```
+* JWT Bearer Authentication
+* BCrypt.Net
 
-Por padrão, a aplicação fica disponível em:
+### Validação
 
-- HTTP: `http://localhost:5271`
-- HTTPS: `https://localhost:7168`
-- Swagger: `https://localhost:7168/swagger`
+* FluentValidation
 
-### Endpoints disponíveis
+### Documentação
 
-#### Registrar usuário
+* Swagger (Swashbuckle OpenAPI)
 
-```http
-POST /api/auth/register
-Content-Type: application/json
-```
+### Logging
 
-```json
-{
-  "name": "Savio",
-  "email": "savio@example.com",
-  "password": "senha-segura"
-}
-```
+* Serilog
 
-Resposta:
+### Configuração
 
-```json
-{
-  "token": "<jwt>"
-}
-```
+* DotNetEnv
 
-#### Login
+### Arquitetura
 
-```http
-POST /api/auth/login
-Content-Type: application/json
-```
+* Clean Architecture
+* Repository Pattern
+* Dependency Injection
 
-```json
-{
-  "email": "savio@example.com",
-  "password": "senha-segura"
-}
-```
+### Testes
 
-Resposta:
+* xUnit
+* Moq
+* FluentAssertions
+* Coverlet
 
-```json
-{
-  "token": "<jwt>"
-}
-```
+---
 
-Para acessar endpoints protegidos, envie o token no cabeçalho:
-
-```http
-Authorization: Bearer <jwt>
-```
-
-## Estrutura do projeto
+## 📁 Estrutura do Projeto
 
 ```text
 momentum_api/
@@ -142,76 +100,94 @@ momentum_api/
 +-- momentum_api.slnx              # Solução do projeto
 ```
 
-## Executando testes
+> A solução foi organizada seguindo os princípios da **Clean Architecture**, separando responsabilidades entre as camadas de apresentação, aplicação, domínio e infraestrutura.
+
+---
+
+## 🚀 Como Executar
+
+### Pré-requisitos
+
+* .NET SDK 10
+* Docker
+* Docker Compose
+
+### Clonar o repositório
 
 ```bash
-dotnet test
+git clone https://github.com/saviotomazb/momentum_api.git
+
+cd momentum_api
 ```
 
-## Tecnologias utilizadas
+### Restaurar as dependências
 
-### Backend
+```bash
+dotnet restore
+```
 
-- ASP.NET Core
-- Entity Framework Core
-- PostgreSQL
-- JWT Authentication
-- BCrypt
+### Configurar as variáveis de ambiente
 
-### Arquitetura e Qualidade
+Edite o arquivo:
 
-- Clean Architecture
-- Repository Pattern
-- Dependency Injection
+```text
+.env.development
+```
 
-### Testes
+Configure as credenciais do PostgreSQL e os parâmetros de autenticação JWT.
 
-- xUnit
-- Moq
-- FluentAssertions
+### Subir o banco de dados
 
-### Infraestrutura
+```bash
+docker compose up -d
+```
 
-- Docker
-- Docker Compose
-- Swagger
+### Aplicar as migrations
 
-## Arquitetura
+```bash
+dotnet ef database update --project src/Momentum.Infrastructure --startup-project src/Momentum.API
+```
 
-O projeto segue os princípios da Clean Architecture, organizado nas seguintes camadas:
+### Executar a aplicação
 
-- API: controllers, autenticação e configuração HTTP
-- Application: casos de uso, DTOs e contratos
-- Domain: entidades e regras de negócio
-- Infrastructure: persistência, Entity Framework Core e integrações externas
+```bash
+dotnet run --project src/Momentum.API
+```
 
-A comunicação entre camadas é realizada por abstrações, mantendo baixo acoplamento e alta testabilidade.
+Por padrão, a API estará disponível em:
 
-## Contribuindo
+```text
+https://localhost:7168
+```
 
-Para contribuir com o Momentum API:
+Swagger:
 
-1. Faça um fork deste repositório.
+```text
+https://localhost:7168/swagger
+```
+
+---
+
+## 🔗 Projeto Relacionado
+
+- **[Momentum Web](https://github.com/saviotomazb/momentum_web.git)** — Interface web responsável pela experiência do usuário e consumo desta API.
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são sempre bem-vindas.
+
+Caso encontre algum problema ou tenha sugestões de melhoria, fique à vontade para abrir uma **Issue** ou enviar uma **Pull Request**, siga estas etapas:
+
+1. Bifurque este repositório.
 2. Crie um branch: `git checkout -b minha-feature`.
-3. Faça suas alterações e confirme-as: `git commit -m "Adiciona minha feature"`.
+3. Faça suas alterações e confirme-as: `git commit -m "Minha feature"`.
 4. Envie para o branch remoto: `git push origin minha-feature`.
 5. Abra uma pull request.
 
-Como alternativa, consulte a documentação do GitHub em [como criar uma solicitacao pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
+Antes de contribuir, certifique-se de:
 
-## Colaboradores
-
-Agradecemos as seguintes pessoas que contribuiram para este projeto:
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/saviotomazb" title="Perfil de Sávio Tomaz no GitHub">
-        <img src="https://avatars.githubusercontent.com/saviotomazb" width="100px;" alt="Foto de Sávio Tomaz no GitHub"/><br>
-        <sub>
-          <b>Sávio Tomaz</b>
-        </sub>
-      </a>
-    </td>
-  </tr>
-</table>
+* Manter o código padronizado.
+* Escrever código legível e reutilizável.
+* Executar os testes antes de enviar alterações.
