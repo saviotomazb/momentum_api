@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Momentum.Domain.Entities;
+using Momentum.Domain.Entities.Finance;
 
 namespace Momentum.Infrastructure.Persistence.Context;
 
@@ -15,6 +16,10 @@ public class AppDbContext : DbContext
     public DbSet<Habit> Habits => Set<Habit>();
 
     public DbSet<HabitCheck> HabitChecks => Set<HabitCheck>();
+
+    public DbSet<Category> Categories => Set<Category>();
+
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
