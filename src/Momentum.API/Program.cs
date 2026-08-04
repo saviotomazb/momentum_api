@@ -9,6 +9,10 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using Momentum.API.HealthChecks;
+using Momentum.Application.Interfaces.Persistence;
+using Momentum.Infrastructure.Persistence.Repositories;
+using Momentum.Application.Interfaces.Categories;
+using Momentum.Application.Services.Categories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,6 +117,10 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
