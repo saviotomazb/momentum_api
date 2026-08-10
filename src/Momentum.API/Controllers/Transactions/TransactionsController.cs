@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Momentum.Application.DTOs.Categories;
-using Momentum.Application.Interfaces.Categories;
 using System.Security.Claims;
+using Momentum.Application.DTOs.Transactions;
+using Momentum.Application.Interfaces.Transactions;
 
-namespace Momentum.API.Controllers.Categories;
+namespace Momentum.API.Controllers.Transactions;
 
 [ApiController]
-[Route("api/categories")]
+[Route("api/[controller]")]
 [Authorize]
-public class CategoriesController : ControllerBase
+public class TransactionsController : ControllerBase
 {
-    private readonly ICategoryService _categoryService;
+    private readonly ITransactionService _transactionService;
 
-    public CategoriesController(ICategoryService categoryService)
+    public TransactionsController(ITransactionService transactionService)
     {
-        _categoryService = categoryService;
+        _transactionService = transactionService;
     }
 
     [HttpPost]
-    public async Task<ActionResult<CategoryResponse>> Create(
-        [FromBody] CreateCategoryRequest request)
+    public async Task<ActionResult<TransactionResponse>> Create(
+        [FromBody] CreateTransactionRequest request)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -34,13 +34,15 @@ public class CategoriesController : ControllerBase
             return Unauthorized();
         }
 
-        var category = await _categoryService.CreateAsync(userId, request);
+        var transaction = await _transactionService.CreateAsync(
+            userId,
+            request);
 
-        return Ok(category);
+        return Ok(transaction);
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<TransactionResponse>>> GetAll()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -54,13 +56,13 @@ public class CategoriesController : ControllerBase
             return Unauthorized();
         }
 
-        var categories = await _categoryService.GetAllAsync(userId);
+        var transactions = await _transactionService.GetAllAsync(userId);
 
-        return Ok(categories);
+        return Ok(transactions);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<CategoryResponse>> GetById(Guid id)
+    public async Task<ActionResult<TransactionResponse>> GetById(Guid id)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -74,15 +76,17 @@ public class CategoriesController : ControllerBase
             return Unauthorized();
         }
 
-        var category = await _categoryService.GetByIdAsync(userId, id);
+        var transaction = await _transactionService.GetByIdAsync(
+            userId,
+            id);
 
-        return Ok(category);
+        return Ok(transaction);
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<CategoryResponse>> Update(
+    public async Task<ActionResult<TransactionResponse>> Update(
         Guid id,
-        [FromBody] UpdateCategoryRequest request)
+        [FromBody] UpdateTransactionRequest request)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -96,12 +100,12 @@ public class CategoriesController : ControllerBase
             return Unauthorized();
         }
 
-        var category = await _categoryService.UpdateAsync(
+        var transaction = await _transactionService.UpdateAsync(
             userId,
             id,
             request);
 
-        return Ok(category);
+        return Ok(transaction);
     }
 
     [HttpDelete("{id:guid}")]
@@ -119,8 +123,8 @@ public class CategoriesController : ControllerBase
             return Unauthorized();
         }
 
-        await _categoryService.DeleteAsync(userId, id);
+        await _transactionService.DeleteAsync(userId, id);
 
         return NoContent();
-    }    
+    }
 }
