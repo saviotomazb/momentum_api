@@ -1,7 +1,8 @@
+using Momentum.Domain.Entities.Finance;
 
 namespace Momentum.Application.Interfaces.Persistence
 {
-    public class ITransactionRepository
+    public interface ITransactionRepository
     {
         Task<Transaction> AddAsync(Transaction transaction);
 
@@ -11,6 +12,6 @@ namespace Momentum.Application.Interfaces.Persistence
 
         Task UpdateAsync(Transaction transaction);
 
-        Task DeleteAsync(Transaction transaction);        
+        Task DeleteAsync(Transaction transaction);
     }
 }

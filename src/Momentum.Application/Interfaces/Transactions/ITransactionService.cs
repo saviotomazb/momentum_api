@@ -2,7 +2,7 @@ using Momentum.Application.DTOs.Transactions;
 
 namespace Momentum.Application.Interfaces.Transactions
 {
-    public class ITransactionService
+    public interface ITransactionService
     {
         Task<TransactionResponse> CreateAsync(
             Guid userId,

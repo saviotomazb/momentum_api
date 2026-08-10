@@ -1,10 +1,11 @@
 using Momentum.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Momentum.Domain.Entities.Finance;
+using Momentum.Application.Interfaces.Persistence;
 
 namespace Momentum.Infrastructure.Persistence.Repositories
 {
-    public class TransactionRepository
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly AppDbContext _context;
 

@@ -13,6 +13,8 @@ using Momentum.Application.Interfaces.Persistence;
 using Momentum.Infrastructure.Persistence.Repositories;
 using Momentum.Application.Interfaces.Categories;
 using Momentum.Application.Services.Categories;
+using Momentum.Application.Interfaces.Transactions;
+using Momentum.Application.Services.Transactions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,8 +121,10 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 

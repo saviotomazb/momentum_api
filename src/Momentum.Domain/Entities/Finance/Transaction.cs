@@ -22,5 +22,39 @@ namespace Momentum.Domain.Entities.Finance
         public Guid UserId { get; private set; }
 
         public User User { get; private set; } = null!;
+
+        public Transaction(
+            string description,
+            decimal amount,
+            TransactionType type,
+            TransactionFrequency frequency,
+            DateTime transactionDate,
+            Guid categoryId,
+            Guid userId)
+        {
+            Description = description;
+            Amount = amount;
+            Type = type;
+            Frequency = frequency;
+            TransactionDate = transactionDate;
+            CategoryId = categoryId;
+            UserId = userId;
+        }
+
+        public void Update(
+            string description,
+            decimal amount,
+            TransactionType type,
+            TransactionFrequency frequency,
+            DateTime transactionDate,
+            Guid categoryId)
+        {
+            Description = description;
+            Amount = amount;
+            Type = type;
+            Frequency = frequency;
+            TransactionDate = transactionDate;
+            CategoryId = categoryId;
+        }
     }
 }
