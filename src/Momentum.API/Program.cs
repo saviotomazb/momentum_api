@@ -15,6 +15,7 @@ using Momentum.Application.Interfaces.Categories;
 using Momentum.Application.Services.Categories;
 using Momentum.Application.Interfaces.Transactions;
 using Momentum.Application.Services.Transactions;
+using Momentum.API.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +86,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddControllers();
 
 builder.Services.AddHealthChecks()
@@ -135,6 +139,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging();
 
