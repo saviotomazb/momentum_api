@@ -19,11 +19,18 @@ public class GlobalExceptionHandler(
 
         var problemDetails = exception switch
         {
-            ConflictException conflictException => new ProblemDetails
+            UnauthorizedException unauthorizedException => new ProblemDetails
             {
-                Status = StatusCodes.Status409Conflict,
-                Title = "Conflict",
-                Detail = conflictException.Message
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Unauthorized",
+                Detail = unauthorizedException.Message
+            },
+
+            ForbiddenException forbiddenException => new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden",
+                Detail = forbiddenException.Message
             },
 
             NotFoundException notFoundException => new ProblemDetails
@@ -33,6 +40,13 @@ public class GlobalExceptionHandler(
                 Detail = notFoundException.Message
             },
 
+            ConflictException conflictException => new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Conflict",
+                Detail = conflictException.Message
+            },
+
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
@@ -40,19 +54,6 @@ public class GlobalExceptionHandler(
                 Detail = "Ocorreu um erro interno no servidor."
             }
         };
-
-        if (exception is ConflictException conflict)
-        {
-            problemDetails.Extensions["code"] = conflict.Code;
-        }
-        else if (exception is NotFoundException notFound)
-        {
-            problemDetails.Extensions["code"] = notFound.Code;
-        }
-        else
-        {
-            problemDetails.Extensions["code"] = "INTERNAL_SERVER_ERROR";
-        }
 
         httpContext.Response.StatusCode = problemDetails.Status!.Value;
 

@@ -3,6 +3,7 @@ using Momentum.Application.Interfaces.Auth;
 using Momentum.Application.Interfaces.Persistence;
 using Momentum.Domain.Entities;
 using Momentum.Application.Common.Security;
+using Momentum.Application.Exceptions;
 
 namespace Momentum.Application.Services.Auth;
 
@@ -26,7 +27,8 @@ public class AuthService : IAuthService
 
         if (existingUser is not null)
         {
-            throw new Exception("User already exists.");
+            throw new ConflictException(
+                "Usuário já existe.");
         }
 
         var user = new User
@@ -37,7 +39,6 @@ public class AuthService : IAuthService
         };
 
         await _userRepository.AddAsync(user);
-
         await _userRepository.SaveChangesAsync();
 
         var token = _jwtTokenGenerator.Generate(user);
@@ -55,7 +56,8 @@ public class AuthService : IAuthService
 
         if (user is null)
         {
-            throw new Exception("Invalid credentials.");
+            throw new UnauthorizedException(
+                "Credenciais inválidas.");
         }
 
         var validPassword = PasswordHasher.Verify(
@@ -64,7 +66,8 @@ public class AuthService : IAuthService
 
         if (!validPassword)
         {
-            throw new Exception("Invalid credentials.");
+            throw new UnauthorizedException(
+                "Credenciais inválidas.");
         }
 
         var token = _jwtTokenGenerator.Generate(user);
