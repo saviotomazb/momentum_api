@@ -19,11 +19,14 @@ public class HabitsController : ControllerBase
 
     [HttpGet]
     [Authorize(Policy = "HabitsRead")]
-    public async Task<IActionResult> GetAll([FromQuery] HabitFilterRequest filter)
+    public async Task<IActionResult> GetAll(
+        [FromQuery] HabitFilterRequest filter)
     {
         var userId = GetUserId();
 
-        var habits = await _habitService.GetAllAsync(userId, filter);
+        var habits = await _habitService.GetAllAsync(
+            userId,
+            filter);
 
         return Ok(habits);
     }
@@ -34,10 +37,9 @@ public class HabitsController : ControllerBase
     {
         var userId = GetUserId();
 
-        var habit = await _habitService.GetByIdAsync(id, userId);
-
-        if (habit is null)
-            return NotFound();
+        var habit = await _habitService.GetByIdAsync(
+            id,
+            userId);
 
         return Ok(habit);
     }
@@ -72,9 +74,6 @@ public class HabitsController : ControllerBase
             userId,
             request);
 
-        if (habit is null)
-            return NotFound();
-
         return Ok(habit);
     }
 
@@ -84,12 +83,9 @@ public class HabitsController : ControllerBase
     {
         var userId = GetUserId();
 
-        var deleted = await _habitService.DeleteAsync(
+        await _habitService.DeleteAsync(
             id,
             userId);
-
-        if (!deleted)
-            return NotFound();
 
         return NoContent();
     }
@@ -104,16 +100,13 @@ public class HabitsController : ControllerBase
             id,
             userId);
 
-        if (habit is null)
-            return BadRequest(
-                new { message = "Habit already completed today." });
-
         return Ok(habit);
     }
 
     private Guid GetUserId()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
 
         return Guid.Parse(userId!);
     }

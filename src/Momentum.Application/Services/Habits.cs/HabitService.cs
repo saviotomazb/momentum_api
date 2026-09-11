@@ -1,5 +1,6 @@
 using Momentum.Application.Common.Pagination;
 using Momentum.Application.DTOs.Habits;
+using Momentum.Application.Exceptions;
 using Momentum.Application.Interfaces.Habits;
 using Momentum.Application.Interfaces.Persistence;
 using Momentum.Domain.Entities;
@@ -33,15 +34,24 @@ public class HabitService : IHabitService
         };
     }
 
-    public async Task<HabitResponse?> GetByIdAsync(
+    public async Task<HabitResponse> GetByIdAsync(
         Guid id,
         Guid userId)
     {
         var habit = await _habitRepository
             .GetByIdWithChecksAsync(id);
 
-        if (habit is null || habit.UserId != userId)
-            return null;
+        if (habit is null)
+        {
+            throw new NotFoundException(
+                "Hábito não encontrado.");
+        }
+
+        if (habit.UserId != userId)
+        {
+            throw new ForbiddenException(
+                "Acesso negado ao hábito.");
+        }
 
         return MapToResponse(habit);
     }
@@ -63,15 +73,24 @@ public class HabitService : IHabitService
         return MapToResponse(habit);
     }
 
-    public async Task<HabitResponse?> UpdateAsync(
+    public async Task<HabitResponse> UpdateAsync(
         Guid id,
         Guid userId,
         UpdateHabitRequest request)
     {
         var habit = await _habitRepository.GetByIdAsync(id);
 
-        if (habit is null || habit.UserId != userId)
-            return null;
+        if (habit is null)
+        {
+            throw new NotFoundException(
+                "Hábito não encontrado.");
+        }
+
+        if (habit.UserId != userId)
+        {
+            throw new ForbiddenException(
+                "Acesso negado ao hábito.");
+        }
 
         habit.Title = request.Title;
         habit.Description = request.Description;
@@ -82,31 +101,54 @@ public class HabitService : IHabitService
         return MapToResponse(habit);
     }
 
-    public async Task<bool> DeleteAsync(Guid id, Guid userId)
+    public async Task DeleteAsync(
+        Guid id,
+        Guid userId)
     {
         var habit = await _habitRepository.GetByIdAsync(id);
 
-        if (habit is null || habit.UserId != userId)
-            return false;
+        if (habit is null)
+        {
+            throw new NotFoundException(
+                "Hábito não encontrado.");
+        }
+
+        if (habit.UserId != userId)
+        {
+            throw new ForbiddenException(
+                "Acesso negado ao hábito.");
+        }
 
         await _habitRepository.DeleteAsync(habit);
-
-        return true;
     }
 
-    public async Task<HabitResponse?> CompleteAsync(Guid id, Guid userId)
+    public async Task<HabitResponse> CompleteAsync(
+        Guid id,
+        Guid userId)
     {
         var habit = await _habitRepository
             .GetByIdWithChecksAsync(id);
 
-        if (habit is null || habit.UserId != userId)
-            return null;
+        if (habit is null)
+        {
+            throw new NotFoundException(
+                "Hábito não encontrado.");
+        }
+
+        if (habit.UserId != userId)
+        {
+            throw new ForbiddenException(
+                "Acesso negado ao hábito.");
+        }
 
         var alreadyCompletedToday = habit.HabitChecks.Any(x =>
             x.CompletedAt.Date == DateTime.UtcNow.Date);
 
         if (alreadyCompletedToday)
-            return null;
+        {
+            throw new ConflictException(
+                "O hábito já foi concluído hoje.");
+        }
 
         habit.HabitChecks.Add(new HabitCheck
         {
@@ -146,7 +188,9 @@ public class HabitService : IHabitService
             .ToList();
 
         if (!dates.Any())
+        {
             return 0;
+        }
 
         var streak = 0;
         var currentDate = DateTime.UtcNow.Date;
