@@ -2,9 +2,8 @@ namespace Momentum.Application.Exceptions;
 
 public class ConflictException : Exception
 {
-    public string Code { get; }
-    public ConflictException(string message, string code) : base(message)
+    public ConflictException(string message)
+        : base(message)
     {
-        Code = code;
     }
 }
