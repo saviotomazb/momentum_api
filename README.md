@@ -1,8 +1,16 @@
-# Momentum API
+<div align="center">
+
+  <img src="docs/logo-symbol.webp" alt="Momentum Symbol" width="300">
+
+</div>
+
+<hr>
+
+<div align="center">
 
 Backend da aplicação **Momentum**, desenvolvido com **ASP.NET Core**, responsável pelas regras de negócio, autenticação, persistência de dados e disponibilização dos serviços consumidos pela aplicação **Momentum Web**.
 
----
+</div>
 
 ## 📖 Sobre o Projeto
 
@@ -11,8 +19,6 @@ O **Momentum API** é a API REST do ecossistema **Momentum**.
 Seu objetivo é centralizar toda a lógica de negócio da aplicação, disponibilizando endpoints seguros para autenticação de usuários, gerenciamento de hábitos, tarefas, finanças e demais funcionalidades do sistema.
 
 A aplicação foi desenvolvida utilizando **ASP.NET Core** e seguindo os princípios da **Clean Architecture**, com foco em escalabilidade, organização e facilidade de manutenção.
-
----
 
 ## ✨ Funcionalidades
 
@@ -30,8 +36,6 @@ A aplicação foi desenvolvida utilizando **ASP.NET Core** e seguindo os princí
 
 * 📋 Gerenciamento de tarefas
 * 💰 Gerenciamento financeiro
-
----
 
 ## 🛠️ Stack Tecnológica
 
@@ -83,8 +87,6 @@ A aplicação foi desenvolvida utilizando **ASP.NET Core** e seguindo os princí
 * FluentAssertions
 * Coverlet
 
----
-
 ## 📁 Estrutura do Projeto
 
 ```text
@@ -101,8 +103,6 @@ momentum_api/
 ```
 
 > A solução foi organizada seguindo os princípios da **Clean Architecture**, separando responsabilidades entre as camadas de apresentação, aplicação, domínio e infraestrutura.
-
----
 
 ## 🚀 Como Executar
 
@@ -166,13 +166,9 @@ Swagger:
 https://localhost:7168/swagger
 ```
 
----
-
 ## 🔗 Projeto Relacionado
 
 - **[Momentum Web](https://github.com/saviotomazb/momentum_web.git)** — Interface web responsável pela experiência do usuário e consumo desta API.
-
----
 
 ## 🤝 Contribuindo
 
