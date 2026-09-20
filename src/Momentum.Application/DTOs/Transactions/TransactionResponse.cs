@@ -14,7 +14,7 @@ namespace Momentum.Application.DTOs.Transactions
 
         public TransactionFrequency Frequency { get; set; }
 
-        public DateTime TransactionDate { get; set; }
+        public DateOnly TransactionDate { get; set; }
 
         public Guid CategoryId { get; set; }        
     }

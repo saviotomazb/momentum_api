@@ -13,7 +13,7 @@ namespace Momentum.Domain.Entities.Finance
 
         public TransactionFrequency Frequency { get; private set; }
 
-        public DateTime TransactionDate { get; private set; }
+        public DateOnly TransactionDate { get; private set; }
 
         public Guid CategoryId { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Momentum.Domain.Entities.Finance
             decimal amount,
             TransactionType type,
             TransactionFrequency frequency,
-            DateTime transactionDate,
+            DateOnly transactionDate,
             Guid categoryId,
             Guid userId)
         {
@@ -46,7 +46,7 @@ namespace Momentum.Domain.Entities.Finance
             decimal amount,
             TransactionType type,
             TransactionFrequency frequency,
-            DateTime transactionDate,
+            DateOnly transactionDate,
             Guid categoryId)
         {
             Description = description;
