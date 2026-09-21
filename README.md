@@ -31,11 +31,11 @@ A aplicação foi desenvolvida utilizando **ASP.NET Core** e seguindo os princí
 * 🌐 API REST
 * 📄 Documentação automática com Swagger/OpenAPI
 * 🗄 Persistência de dados com PostgreSQL
+* 💰 Gerenciamento financeiro
 
 ### 🚧 Em desenvolvimento
 
 * 📋 Gerenciamento de tarefas
-* 💰 Gerenciamento financeiro
 
 ## 🛠️ Stack Tecnológica
 
