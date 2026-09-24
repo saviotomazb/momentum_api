@@ -12,7 +12,7 @@ namespace Momentum.Domain.Entities.Tasks
 
         public string Title { get; private set; } = string.Empty;
 
-        public string Description { get; private set; } = string.Empty;
+        public string? Description { get; private set; }
 
         public TaskStatus Status { get; private set; }
 
@@ -36,7 +36,7 @@ namespace Momentum.Domain.Entities.Tasks
             Guid userId,
             Guid taskListId,
             string title,
-            string description,
+            string? description,
             TaskStatus status,
             TaskPriority priority,
             DateTime? scheduledDate,
@@ -54,7 +54,7 @@ namespace Momentum.Domain.Entities.Tasks
 
         public void Update(
             string title,
-            string description,
+            string? description,
             TaskStatus status,
             TaskPriority priority,
             DateTime? scheduledDate,
