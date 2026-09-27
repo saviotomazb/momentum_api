@@ -16,6 +16,8 @@ using Momentum.Application.Services.Categories;
 using Momentum.Application.Interfaces.Transactions;
 using Momentum.Application.Services.Transactions;
 using Momentum.API.Exceptions;
+using Momentum.Application.Interfaces.Persistence.Tasks;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -126,6 +128,9 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ISubtaskRepository, SubtaskRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
