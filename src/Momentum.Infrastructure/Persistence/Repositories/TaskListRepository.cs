@@ -4,6 +4,8 @@ using Momentum.Application.Interfaces.Persistence.Tasks;
 using Momentum.Domain.Entities.Tasks;
 using Momentum.Infrastructure.Persistence.Context;
 using Task = System.Threading.Tasks.Task;
+using Momentum.Application.Exceptions;
+using Npgsql;
 
 namespace Momentum.Infrastructure.Persistence.Repositories;
 
@@ -32,13 +34,42 @@ public class TaskListRepository : ITaskListRepository
     public async Task AddAsync(TaskList taskList)
     {
         await _context.TaskLists.AddAsync(taskList);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+            when (IsDuplicateTaskListName(ex))
+        {
+            throw new ConflictException(
+                "Você já possui uma lista com esse nome.");
+        }
     }
 
     public async Task UpdateAsync(TaskList taskList)
     {
         _context.TaskLists.Update(taskList);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+            when (IsDuplicateTaskListName(ex))
+        {
+            throw new ConflictException(
+                "Você já possui uma lista com esse nome.");
+        }
+    }
+
+    private static bool IsDuplicateTaskListName(DbUpdateException exception)
+    {
+        return exception.InnerException is PostgresException
+        {
+            SqlState: PostgresErrorCodes.UniqueViolation,
+            ConstraintName: "IX_task_lists_UserId_NormalizedName"
+        };
     }
 
     public async Task DeleteAsync(TaskList taskList)
