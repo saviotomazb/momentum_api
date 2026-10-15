@@ -1,46 +1,72 @@
-# Build
+# .NET
 bin/
 obj/
-
-# User-specific files
+[Bb]uild/
+[Aa]rtifacts/
+publish/
 *.user
 *.suo
+*.sln.docstates
+*.nupkg
+*.snupkg
 
-# IDE
+# ASP.NET Core - local settings
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# Entity Framework Core
+# Keep migrations and ModelSnapshot files versioned
+
+# Test results and coverage
+TestResults/
+[Tt]est[Rr]esults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# Angular / Node.js
+node_modules/
+dist/
+.angular/
+.nx/
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Package manager caches
+.npm/
+.pnpm-store/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# IDEs and editors
+.vs/
 .vscode/
 .idea/
-
-# Logs
-*.log
-
-# ASP.NET
-appsettings.Development.json
-
-# Rider
 *.sln.iml
-
-# Resharper
 _ReSharper*/
 *.DotSettings.user
+*.swp
+*.swo
 
-# Test results
-TestResults/
-
-# Coverage
-coverage/
-
-# OS
-.DS_Store
-Thumbs.db
+# Logs and temporary files
+*.log
+tmp/
+temp/
+*.tmp
 
 # Docker
 .docker/
 
-# NuGet
-*.nupkg
-
-# Entity Framework
-Migrations/*Snapshot.cs
-
-# Environment variables
-.env*
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini

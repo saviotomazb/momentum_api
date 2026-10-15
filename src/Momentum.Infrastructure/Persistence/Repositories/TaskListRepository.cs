@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using Momentum.Application.Interfaces.Persistence.Tasks;
 using Momentum.Domain.Entities.Tasks;
@@ -31,20 +32,28 @@ public class TaskListRepository : ITaskListRepository
     public async Task AddAsync(TaskList taskList)
     {
         await _context.TaskLists.AddAsync(taskList);
+        await _context.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(TaskList taskList)
+    public async Task UpdateAsync(TaskList taskList)
     {
         _context.TaskLists.Update(taskList);
-
-        return Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(TaskList taskList)
+    public async Task DeleteAsync(TaskList taskList)
     {
         _context.TaskLists.Remove(taskList);
-
-        return Task.CompletedTask;
+        await _context.SaveChangesAsync();
     }
 
+    public async Task<bool> ExistsByNameAsync(Guid userId, string name, Guid? excludeId = null)
+    {
+        var normalizedName = name.Trim().ToLower();
+
+        return await _context.TaskLists.AnyAsync(x =>
+            x.UserId == userId &&
+            x.Name.Trim().ToLower() == normalizedName &&
+            (excludeId == null || x.Id != excludeId));
+    }
 }

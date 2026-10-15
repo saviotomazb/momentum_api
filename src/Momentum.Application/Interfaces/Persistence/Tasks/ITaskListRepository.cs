@@ -15,4 +15,6 @@ public interface ITaskListRepository
 
     Task DeleteAsync(TaskList taskList);
 
+    Task<bool> ExistsByNameAsync(Guid userId, string name, Guid? excludeId = null);
+
 }

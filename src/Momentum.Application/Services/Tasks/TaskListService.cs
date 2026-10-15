@@ -23,6 +23,15 @@ public class TaskListService : ITaskListService
         Guid userId,
         CreateTaskListRequest request)
     {
+        var nameExists = await _taskListRepository
+            .ExistsByNameAsync(userId, request.Name);
+
+        if (nameExists)
+        {
+            throw new ConflictException(
+                "Você já possui uma lista com esse nome.");
+        }
+
         var taskList = new DomainTaskList(
             request.Name,
             userId);
@@ -69,6 +78,15 @@ public class TaskListService : ITaskListService
         {
             throw new NotFoundException(
                 "Lista de tarefas não encontrada.");
+        }
+
+        var nameExists = await _taskListRepository
+        .ExistsByNameAsync(userId, request.Name, id);
+
+        if (nameExists)
+        {
+            throw new ConflictException(
+                "Você já possui uma lista com esse nome.");
         }
 
         taskList.Update(request.Name);
